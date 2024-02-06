@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+
+    parameters {
+        persistentString(name: 'Version', defaultValue: '1.0.0', description: 'Version')
+        persistentString(name: 'BundleVersionCode', defaultValue: '1', description: 'Bundle Version Code')
+        persistentString(name: 'BuildPath', defaultValue: 'build/local_android', description: '生成路径')
+        persistentBoolean(name: 'SeparateAsset', defaultValue: false, description: '是否分包')
+        persistentBoolean(name: 'BuildAAB', defaultValue: false, description: 'Build AAB')
+        persistentChoice(name: 'TargetPlatform', choices: ['Android', 'iOS'], description: '打包平台')
+        persistentString(name: 'BuildMethod', defaultValue: 'WS.Auto.BuildWithCommandLine.AutoBuild', description: '打包函数')
+
+        persistentString(name: 'GitPath', defaultValue: '',  description: 'Git地址')
+        persistentString(name: 'GitBranch', defaultValue: 'master',  description: 'Git分支')
+        persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2022.3.18f1-android-3.0.1',  description: 'Unity Docker Image')
+
+        persistentBoolean(name: 'OnlyInit', defaultValue: true, description: '只初始化参数')
+    }
+
+    environment {
+        BUILD_VERSION = "${params.Version}"
+        BUILD_BUNDLECODE = "${params.BundleVersionCode}"
+        BUILD_PATH = "${params.BuildPath}"
+        BUILD_SEPARATEASSET =  "${params.SeparateAsset}"
+        BUILD_BUILDAAB = "${params.BuildAAB}"
+        BUILD_TARGET = "${params.TargetPlatform}"
+        BUILD_METHOD = "${params.BuildMethod}"
+
+        UNITY_ACTIVATION_FILE =  './unity3d.alf'
+        IMAGE = "${params.UnityImage}"
+
+        WORKSPACE_JENKINS = pwd()
+        WORKSPACE_OS = "${JENKINS_HOME}/workspace/${FILE_NAME}"
+
+        GRADLECACHE_OS = "${UNITY_HOME}/gradle"
+
+        FILE_NAME = sh(script: "basename ${WORKSPACE_JENKINS}", returnStdout: true).trim()
+
+        CI_DIR_OS = "${WORKSPACE_OS}/Assets/_WS_Auto_/sh"
+        CI_DIR_JENKINS = "${WORKSPACE_JENKINS}/Assets/_WS_Auto_/sh"
+        CI_DIR_UNITY = '/project/Assets/_WS_Auto_/sh'
+    }
+
+    stages {
+        stage('OnlyInit') {
+            steps {
+                script {
+                    if (params.OnlyInit == true) {
+                        error 'params.OnlyInit is true.  parameters初始化完成 .'
+                    }
+                }
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "${params.GitBranch}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                        [$class: 'CloneOption', timeout: 60, shallow: true]
+                    ],
+                    userRemoteConfigs: [
+                        [credentialsId: 'jenkins-auto-build', url:"${params.GitPath}"]
+                    ]
+                ])
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'UNITY_USERNAME', variable: 'UNITY_USERNAME'),
+                    string(credentialsId: 'UNITY_PASSWORD', variable: 'UNITY_PASSWORD'),
+                     string(credentialsId: 'UNITY_SERIAL', variable: 'UNITY_SERIAL')
+                    ]) {
+                        // 启动 Docker 容器，并运行 Unity 命令
+
+                        echo "WORKSPACE_OS: ${WORKSPACE_OS}"
+                        echo "Workspace: ${WORKSPACE_JENKINS}"
+
+                        sh "chmod +x ${CI_DIR_JENKINS}/docker_build.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS}/before_script.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS}/build.sh"
+
+                        sh "${CI_DIR_JENKINS}/docker_build.sh"
+                    }
+                }
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                echo ' 归档 .apk 和 .aab 文件'
+                // 归档 .apk 和 .aab 文件
+                archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true
+                echo '删除build文件'
+                sh "rm -rf ${BUILD_PATH}/*"
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    environment {
+        ABC = 'ABC'
+    }
+
+    stages {
+        stage('Generate-Unity-LICENSE') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'UNITY_USERNAME', variable: 'UNITY_USERNAME'),
+                    string(credentialsId: 'UNITY_PASSWORD', variable: 'UNITY_PASSWORD'),
+                    string(credentialsId: 'UNITY_SERIAL', variable: 'UNITY_SERIAL')
+                    ]) {
+                        // 生成 Unity_lic
+
+                        def dockerCommand = """
+                        docker run --rm --name unity1 -u 0:0   abc/unity:2022.3.18 bash -c "
+                            xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \\
+                            unity-editor \\
+                            -logFile /dev/stdout \\
+                            -nographics \\
+                            -username \${UNITY_USERNAME} -password \${UNITY_PASSWORD} -serial \${UNITY_SERIAL} \\
+                            -quit \\
+                            -batchmode
+
+                            echo '#######################'
+
+                            cat /root/.local/share/unity3d/Unity/Unity_lic.ulf
+
+                            echo
+                            echo '#######################'
+                        "
+                    """
+                        sh dockerCommand
+                    }
+                }
+            }
+        }
+    }
+}

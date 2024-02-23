@@ -36,9 +36,9 @@ pipeline {
 
         FILE_NAME = sh(script: "basename ${WORKSPACE_JENKINS}", returnStdout: true).trim()
 
-        CI_DIR_OS = "${WORKSPACE_OS}/Assets/_WS_Auto_/sh"
-        CI_DIR_JENKINS = "${WORKSPACE_JENKINS}/Assets/_WS_Auto_/sh"
-        CI_DIR_UNITY = '/project/Assets/_WS_Auto_/sh'
+        CI_DIR_OS = "${WORKSPACE_OS}/.sh"
+        CI_DIR_JENKINS = "${WORKSPACE_JENKINS}/.sh"
+        CI_DIR_UNITY = '/project/.sh'
     }
 
     stages {

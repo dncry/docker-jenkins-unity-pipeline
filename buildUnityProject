@@ -59,7 +59,7 @@ pipeline {
                     branches: [[name: "${params.GitBranch}"]],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [
-                        [$class: 'CloneOption', timeout: 60, shallow: true]
+                        [$class:'CheckoutOption',timeout:30],[$class: 'GitLFSPull'],[$class:'CloneOption',depth:0,noTags:false,reference:'',shallow:false,timeout:30]
                     ],
                     userRemoteConfigs: [
                         [credentialsId: 'jenkins-auto-build', url:"${params.GitPath}"]

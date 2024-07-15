@@ -16,7 +16,7 @@ UNITY_HOME=`/home/abc/docker/unity/data`
 
 **SdkPath NdkPath JdkPath GradlePath** 为空时，使用的unity默认的工具  
 如需自定义,需要手动下载各种工具放在宿主机指定位置,示例写法为  
-gradle-7.2 , sdk-unity2020-04  
+`gradle-7.2` , `sdk-unity2020-04`  
 这些路径下的文件会挂载到 unity docker 中  
 
 ***

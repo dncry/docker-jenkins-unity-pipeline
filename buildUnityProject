@@ -19,7 +19,7 @@ pipeline {
         persistentString(name: 'JdkPath', defaultValue: '',  description: '自定义JdkPath')
         persistentString(name: 'GradlePath', defaultValue: '',  description: '自定义GradlePath')
 
-        persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/jenkins-pipeline.git',  description: 'ShGit地址')
+        persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
         persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
         persistentString(name: 'ShPath', defaultValue: '/sh',  description: 'Sh路径')
         

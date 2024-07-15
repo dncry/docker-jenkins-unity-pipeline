@@ -11,8 +11,18 @@ pipeline {
         persistentString(name: 'BuildMethod', defaultValue: 'WS.Auto.BuildWithCommandLine.AutoBuild', description: '打包函数')
 
         persistentString(name: 'GitPath', defaultValue: '',  description: 'Git地址')
-        persistentString(name: 'GitBranch', defaultValue: 'master',  description: 'Git分支')
+        persistentString(name: 'GitBranch', defaultValue: 'main',  description: 'Git分支')
         persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2022.3.18f1-android-3.0.1',  description: 'Unity Docker Image')
+
+        persistentString(name: 'SdkPath', defaultValue: '',  description: '自定义SdkPath')
+        persistentString(name: 'NdkPath', defaultValue: '',  description: '自定义NdkPath')       
+        persistentString(name: 'JdkPath', defaultValue: '',  description: '自定义JdkPath')
+        persistentString(name: 'GradlePath', defaultValue: '',  description: '自定义GradlePath')
+
+        persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/jenkins-pipeline.git',  description: 'ShGit地址')
+        persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
+        persistentString(name: 'ShPath', defaultValue: '/sh',  description: 'Sh路径')
+        
 
         persistentBoolean(name: 'OnlyInit', defaultValue: true, description: '只初始化参数')
     }
@@ -33,12 +43,30 @@ pipeline {
         WORKSPACE_OS = "${JENKINS_HOME}/workspace/${FILE_NAME}"
 
         GRADLECACHE_OS = "${UNITY_HOME}/gradle"
+        MAVENLOCAL_OS = "${UNITY_HOME}/.m2/repository"
 
         FILE_NAME = sh(script: "basename ${WORKSPACE_JENKINS}", returnStdout: true).trim()
 
         CI_DIR_OS = "${WORKSPACE_OS}/.sh"
         CI_DIR_JENKINS = "${WORKSPACE_JENKINS}/.sh"
         CI_DIR_UNITY = '/project/.sh'
+
+        CI_DIR_OS_ShGit = "${WORKSPACE_OS}/.sh${params.ShPath}"
+        CI_DIR_JENKINS_ShGit = "${WORKSPACE_JENKINS}/.sh${params.ShPath}"
+        CI_DIR_UNITY_ShGit = "/project/.sh${params.ShPath}"
+
+
+        Sdk_Path_OS = "${UNITY_HOME}/tools/sdk/${params.SdkPath}"
+        Ndk_Path_OS = "${UNITY_HOME}/tools/ndk/${params.NdkPath}"
+        Jdk_Path_OS = "${UNITY_HOME}/tools/jdk/${params.JdkPath}"
+        Gradle_Path_OS = "${UNITY_HOME}/tools/gradle/${params.GradlePath}"
+
+        Sdk_Path_UNITY =  "/tools/sdk"
+        Ndk_Path_UNITY =  "/tools/ndk"
+        Jdk_Path_UNITY =  "/tools/jdk"
+        Gradle_Path_UNITY =  "/tools/gradle"
+
+
     }
 
     stages {
@@ -52,21 +80,81 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
+        stage('Set Environment Variables') {
             steps {
+                script {
+
+                    if(params.SdkPath==""){
+                        env.Sdk_Path_Env=""
+                    }
+                    else{
+                        env.Sdk_Path_Env = "${Sdk_Path_UNITY}"      
+                    }
+
+                    if(params.NdkPath==""){
+                        env.Ndk_Path_Env=""
+                    }
+                    else{
+                        env.Ndk_Path_Env = "${Ndk_Path_UNITY}"       
+                    }
+
+
+                    if(params.JdkPath==""){
+                        env.Jdk_Path_Env=""
+                    }
+                    else{
+                        env.Jdk_Path_Env = "${Jdk_Path_UNITY}"      
+                    }
+
+                    if(params.GradlePath==""){
+                        env.Gradle_Path_Env=""
+                    }
+                    else{
+                        env.Gradle_Path_Env ="${Gradle_Path_UNITY}"    
+                    }
+
+                    echo "Sdk_Path_Env: ${env.Sdk_Path_Env}"
+                    echo "Ndk_Path_Env: ${env.Ndk_Path_Env}"
+                    echo "Jdk_Path_Env: ${env.Jdk_Path_Env}"
+                    echo "Gradle_Path_Env: ${env.Gradle_Path_Env}"
+        
+                }
+            }
+        }
+
+
+        stage('Checkout') {
+            steps {   
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: "${params.GitBranch}"]],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [
-                        [$class:'CheckoutOption',timeout:30],[$class: 'GitLFSPull'],[$class:'CloneOption',depth:0,noTags:false,reference:'',shallow:false,timeout:30]
-                    ],
+                    extensions: [lfs(), cloneOption(depth: 1, noTags: false, reference: '', shallow: true, timeout: 30), checkoutOption(30)],
                     userRemoteConfigs: [
                         [credentialsId: 'jenkins-auto-build', url:"${params.GitPath}"]
                     ]
                 ])
             }
         }
+
+
+        stage('Pull .sh') {  
+            steps {  
+                script {  
+                    sh "mkdir -p \"${CI_DIR_JENKINS}/\""  
+                }  
+
+                dir("${CI_DIR_JENKINS}/") {  
+                    checkout([  
+                        $class: 'GitSCM',  
+                        branches: [[name: "${params.ShGitBranch}"]],  
+                        userRemoteConfigs: [  
+                            [credentialsId: 'jenkins-auto-build', url: "${params.ShGitPath}"]  
+                        ]  
+                    ])  
+                }  
+            }  
+        } 
+
 
         stage('Run Container') {
             steps {
@@ -80,11 +168,11 @@ pipeline {
                         echo "WORKSPACE_OS: ${WORKSPACE_OS}"
                         echo "Workspace: ${WORKSPACE_JENKINS}"
 
-                        sh "chmod +x ${CI_DIR_JENKINS}/docker_build.sh"
-                        sh "chmod +x ${CI_DIR_JENKINS}/before_script.sh"
-                        sh "chmod +x ${CI_DIR_JENKINS}/build.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_build.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/before_script.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/build.sh"
 
-                        sh "${CI_DIR_JENKINS}/docker_build.sh"
+                        sh "${CI_DIR_JENKINS_ShGit}/docker_build.sh"
                     }
                 }
             }

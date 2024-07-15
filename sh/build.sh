@@ -20,7 +20,11 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -buildPath $BUILD_PATH \
   -buildSeparateAsset $BUILD_SEPARATEASSET \
   -buildAAB $BUILD_BUILDAAB \
-  -buildTarget $BUILD_TARGET
+  -buildTarget $BUILD_TARGET \
+  -sdkPath $Sdk_Path_Env \
+  -ndkPath $Ndk_Path_Env \
+  -jdkPath $Jdk_Path_Env \
+  -gradlePath $Gradle_Path_Env
 
 UNITY_EXIT_CODE=$?
 

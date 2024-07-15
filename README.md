@@ -1,5 +1,8 @@
 # docker-jenkins-unity-pipeline
 
+通过 **Ubuntu主机** 运行 **Docker-Jenkins**  
+通过 **Docker-Jenkins** 运行 **Docker-Unity**
+
 ***
 
 使用**GameCi**  

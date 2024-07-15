@@ -24,6 +24,9 @@ UNITY_HOME=`/home/abc/docker/unity/data`
 
 ***
 
-**ShGitPath ShGitBranch ShPath** 是读取打包sh文件的Git仓库
+**ShGitPath ShGitBranch ShPath** 是读取打包sh文件的Git仓库  
+sh文件就存放在此git仓库  
+`/sh`
+
 
 ***

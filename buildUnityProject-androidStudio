@@ -1,1 +1,191 @@
+pipeline {
+    agent any
 
+    parameters {
+        persistentString(name: 'Version', defaultValue: '1.0.0', description: 'Version')
+        persistentString(name: 'BundleVersionCode', defaultValue: '1', description: 'Bundle Version Code')
+        persistentString(name: 'BuildPath', defaultValue: 'build/local_android', description: '生成路径')
+        persistentBoolean(name: 'SeparateAsset', defaultValue: false, description: '是否分包')
+        persistentBoolean(name: 'BuildAAB', defaultValue: false, description: 'Build AAB')
+        persistentChoice(name: 'TargetPlatform', choices: ['Android', 'iOS'], description: '打包平台')
+        persistentString(name: 'BuildMethod', defaultValue: 'WS.Auto.BuildWithCommandLine.AutoBuild', description: '打包函数')
+
+        persistentString(name: 'GitPath', defaultValue: '',  description: 'Git地址')
+        persistentString(name: 'GitBranch', defaultValue: 'main',  description: 'Git分支')
+        persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2022.3.18f1-android-3.0.1',  description: 'Unity Docker Image')
+
+        persistentString(name: 'SdkPath', defaultValue: '',  description: '自定义SdkPath')
+        persistentString(name: 'NdkPath', defaultValue: '',  description: '自定义NdkPath')       
+        persistentString(name: 'JdkPath', defaultValue: '',  description: '自定义JdkPath')
+        persistentString(name: 'GradlePath', defaultValue: '',  description: '自定义GradlePath')
+
+        persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
+        persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
+        persistentString(name: 'ShPath', defaultValue: '/sh',  description: 'Sh路径')
+        
+
+        persistentBoolean(name: 'OnlyInit', defaultValue: true, description: '只初始化参数')
+    }
+
+    environment {
+        BUILD_VERSION = "${params.Version}"
+        BUILD_BUNDLECODE = "${params.BundleVersionCode}"
+        BUILD_PATH = "${params.BuildPath}"
+        BUILD_SEPARATEASSET =  "${params.SeparateAsset}"
+        BUILD_BUILDAAB = "${params.BuildAAB}"
+        BUILD_TARGET = "${params.TargetPlatform}"
+        BUILD_METHOD = "${params.BuildMethod}"
+
+        UNITY_ACTIVATION_FILE =  './unity3d.alf'
+        IMAGE = "${params.UnityImage}"
+
+        WORKSPACE_JENKINS = pwd()
+        WORKSPACE_OS = "${JENKINS_HOME}/workspace/${FILE_NAME}"
+
+        GRADLECACHE_OS = "${UNITY_HOME}/gradle"
+        MAVENLOCAL_OS = "${UNITY_HOME}/.m2/repository"
+
+        FILE_NAME = sh(script: "basename ${WORKSPACE_JENKINS}", returnStdout: true).trim()
+
+        CI_DIR_OS = "${WORKSPACE_OS}/.sh"
+        CI_DIR_JENKINS = "${WORKSPACE_JENKINS}/.sh"
+        CI_DIR_UNITY = '/project/.sh'
+
+        CI_DIR_OS_ShGit = "${WORKSPACE_OS}/.sh${params.ShPath}"
+        CI_DIR_JENKINS_ShGit = "${WORKSPACE_JENKINS}/.sh${params.ShPath}"
+        CI_DIR_UNITY_ShGit = "/project/.sh${params.ShPath}"
+
+
+        Sdk_Path_OS = "${UNITY_HOME}/tools/sdk/${params.SdkPath}"
+        Ndk_Path_OS = "${UNITY_HOME}/tools/ndk/${params.NdkPath}"
+        Jdk_Path_OS = "${UNITY_HOME}/tools/jdk/${params.JdkPath}"
+        Gradle_Path_OS = "${UNITY_HOME}/tools/gradle/${params.GradlePath}"
+
+        Sdk_Path_UNITY =  "/tools/sdk"
+        Ndk_Path_UNITY =  "/tools/ndk"
+        Jdk_Path_UNITY =  "/tools/jdk"
+        Gradle_Path_UNITY =  "/tools/gradle"
+
+
+    }
+
+    stages {
+        stage('OnlyInit') {
+            steps {
+                script {
+                    if (params.OnlyInit == true) {
+                        error 'params.OnlyInit is true.  parameters初始化完成 .'
+                    }
+                }
+            }
+        }
+
+        stage('Set Environment Variables') {
+            steps {
+                script {
+
+                    if(params.SdkPath==""){
+                        env.Sdk_Path_Env=""
+                    }
+                    else{
+                        env.Sdk_Path_Env = "${Sdk_Path_UNITY}"      
+                    }
+
+                    if(params.NdkPath==""){
+                        env.Ndk_Path_Env=""
+                    }
+                    else{
+                        env.Ndk_Path_Env = "${Ndk_Path_UNITY}"       
+                    }
+
+
+                    if(params.JdkPath==""){
+                        env.Jdk_Path_Env=""
+                    }
+                    else{
+                        env.Jdk_Path_Env = "${Jdk_Path_UNITY}"      
+                    }
+
+                    if(params.GradlePath==""){
+                        env.Gradle_Path_Env=""
+                    }
+                    else{
+                        env.Gradle_Path_Env ="${Gradle_Path_UNITY}"    
+                    }
+
+                    echo "Sdk_Path_Env: ${env.Sdk_Path_Env}"
+                    echo "Ndk_Path_Env: ${env.Ndk_Path_Env}"
+                    echo "Jdk_Path_Env: ${env.Jdk_Path_Env}"
+                    echo "Gradle_Path_Env: ${env.Gradle_Path_Env}"
+        
+                }
+            }
+        }
+
+
+        stage('Checkout') {
+            steps {   
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "${params.GitBranch}"]],
+                    extensions: [lfs(), cloneOption(depth: 1, noTags: false, reference: '', shallow: true, timeout: 30), checkoutOption(30)],
+                    userRemoteConfigs: [
+                        [credentialsId: 'jenkins-auto-build', url:"${params.GitPath}"]
+                    ]
+                ])
+            }
+        }
+
+
+        stage('Pull .sh') {  
+            steps {  
+                script {  
+                    sh "mkdir -p \"${CI_DIR_JENKINS}/\""  
+                }  
+
+                dir("${CI_DIR_JENKINS}/") {  
+                    checkout([  
+                        $class: 'GitSCM',  
+                        branches: [[name: "${params.ShGitBranch}"]],  
+                        userRemoteConfigs: [  
+                            [credentialsId: 'jenkins-auto-build', url: "${params.ShGitPath}"]  
+                        ]  
+                    ])  
+                }  
+            }  
+        } 
+
+
+        stage('Run Container') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'UNITY_USERNAME', variable: 'UNITY_USERNAME'),
+                    string(credentialsId: 'UNITY_PASSWORD', variable: 'UNITY_PASSWORD'),
+                     string(credentialsId: 'UNITY_SERIAL', variable: 'UNITY_SERIAL')
+                    ]) {
+                        // 启动 Docker 容器，并运行 Unity 命令
+
+                        echo "WORKSPACE_OS: ${WORKSPACE_OS}"
+                        echo "Workspace: ${WORKSPACE_JENKINS}"
+
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_build.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/before_script.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/build.sh"
+
+                        sh "${CI_DIR_JENKINS_ShGit}/docker_build.sh"
+                    }
+                }
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                echo ' 归档 .apk 和 .aab 文件'
+                // 归档 .apk 和 .aab 文件
+                archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true
+                echo '删除build文件'
+                sh "rm -rf ${BUILD_PATH}/*"
+            }
+        }
+    }
+}

@@ -10,7 +10,7 @@ docker run \
   -e BUILD_BUNDLECODE \
   -e BUILD_PATH \
   -e BUILD_SEPARATEASSET \
-  -e BUILD_BUILDAAB \
+  -e BUILD_BuildAndroidType \
   -e BUILD_TARGET \
   -e BUILD_METHOD \
   -e Sdk_Path_Env \

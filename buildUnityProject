@@ -6,7 +6,7 @@ pipeline {
         persistentString(name: 'BundleVersionCode', defaultValue: '1', description: 'Bundle Version Code')
         persistentString(name: 'BuildPath', defaultValue: 'build/local_android', description: '生成路径')
         persistentBoolean(name: 'SeparateAsset', defaultValue: false, description: '是否分包')
-        persistentChoice(name: 'BuildAndroidType',choices: ['apk', 'aab','androidStudio'], description: 'Build Android Type')
+        persistentBoolean(name: 'BuildAAB', defaultValue: false, description: 'Build AAB')
         persistentChoice(name: 'TargetPlatform', choices: ['Android', 'iOS'], description: '打包平台')
         persistentString(name: 'BuildMethod', defaultValue: 'WS.Auto.BuildWithCommandLine.AutoBuild', description: '打包函数')
 
@@ -32,7 +32,7 @@ pipeline {
         BUILD_BUNDLECODE = "${params.BundleVersionCode}"
         BUILD_PATH = "${params.BuildPath}"
         BUILD_SEPARATEASSET =  "${params.SeparateAsset}"
-        BUILD_BuildAndroidType = "${params.BuildAndroidType}"
+        BUILD_BUILDAAB = "${params.BuildAAB}"
         BUILD_TARGET = "${params.TargetPlatform}"
         BUILD_METHOD = "${params.BuildMethod}"
 

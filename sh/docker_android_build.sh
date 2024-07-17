@@ -19,7 +19,7 @@ docker run \
   -e Jdk_Path_Env \
   -e Gradle_Path_Env \
   -w /project/ \
-  -v $BUILD_PATH_OS:/project:cached \
+  -v $BUILD_PATH_OS:/project2:cached \
   -v $GRADLECACHE_OS:/root/.gradle \
   -v $Sdk_Path_OS:$Sdk_Path_UNITY \
   -v $Ndk_Path_OS:$Ndk_Path_UNITY \
@@ -28,7 +28,7 @@ docker run \
   --rm \
   "abc/android:cimg-2024.04.1-ndk" \
   /bin/bash -c "
-    cd /project;
+    cd /project2;
     chmod +x \$Gradle_Path_Env/bin/gradle ;
 
     \$ANDROID_HOME= \$Sdk_Path_Env;

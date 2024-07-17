@@ -31,9 +31,9 @@ docker run \
     cd /project;
     chmod +x \$Gradle_Path_Env/bin/gradle ;
 
-    ANDROID_HOME= \$Sdk_Path_Env;
-    ANDROID_NDK_HOME = \$Ndk_Path_Env;
-    JAVA_HOME = \$Jdk_Path_Env;
+    \$ANDROID_HOME= \$Sdk_Path_Env;
+    \$ANDROID_NDK_HOME = \$Ndk_Path_Env;
+    \$JAVA_HOME = \$Jdk_Path_Env;
 
 
     \$Gradle_Path_Env/bin/gradle assembleRelease \

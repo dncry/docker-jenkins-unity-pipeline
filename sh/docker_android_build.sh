@@ -29,7 +29,9 @@ docker run \
   "abc/android:cimg-2024.04.1-ndk" \
   /bin/bash -c "
     cd /project;
-
     chmod +x \$Gradle_Path_Env/bin/gradle ;
-    \$Gradle_Path_Env/bin/gradle assembleRelease ;
+    \$Gradle_Path_Env/bin/gradle assembleRelease \
+       -Dsdk.dir=\$Sdk_Path_Env \
+       -Dndk.dir=\$Ndk_Path_Env \
+       -Dorg.gradle.java.home=\$Jdk_Path_Env ;
   "

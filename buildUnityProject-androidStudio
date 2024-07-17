@@ -14,10 +14,10 @@ pipeline {
         persistentString(name: 'GitBranch', defaultValue: 'main',  description: 'Git分支')
         persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2022.3.18f1-android-3.0.1',  description: 'Unity Docker Image')
 
-        persistentString(name: 'SdkPath', defaultValue: '',  description: '自定义SdkPath')
-        persistentString(name: 'NdkPath', defaultValue: '',  description: '自定义NdkPath')
-        persistentString(name: 'JdkPath', defaultValue: '',  description: '自定义JdkPath')
-        persistentString(name: 'GradlePath', defaultValue: '',  description: '自定义GradlePath')
+        persistentString(name: 'SdkPath', defaultValue: 'sdk-unity2020.3',  description: '自定义SdkPath')
+        persistentString(name: 'NdkPath', defaultValue: 'ndk-unity2020.3',  description: '自定义NdkPath')
+        persistentString(name: 'JdkPath', defaultValue: 'jdk-11.0.14',  description: '自定义JdkPath')
+        persistentString(name: 'GradlePath', defaultValue: 'gradle-7.2',  description: '自定义GradlePath')
 
         persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
         persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')

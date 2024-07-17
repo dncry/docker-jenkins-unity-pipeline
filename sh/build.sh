@@ -20,6 +20,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -buildPath $BUILD_PATH \
   -buildSeparateAsset $BUILD_SEPARATEASSET \
   -buildAAB $BUILD_BUILDAAB \
+  -exportProject $BUILD_BUILDEXPORTPROJECT \
   -buildTarget $BUILD_TARGET \
   -sdkPath $Sdk_Path_Env \
   -ndkPath $Ndk_Path_Env \
@@ -35,8 +36,7 @@ elif [ $UNITY_EXIT_CODE -eq 2 ]; then
 elif [ $UNITY_EXIT_CODE -eq 101 ]; then
   echo "Run failure (other failure)";
 elif [ $UNITY_EXIT_CODE -eq 102 ]; then
-  echo "Run cancelled"; 
+  echo "Run cancelled";
 else
   echo "Unexpected exit code $UNITY_EXIT_CODE";
 fi
-

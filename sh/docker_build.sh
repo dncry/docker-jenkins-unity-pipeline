@@ -11,6 +11,7 @@ docker run \
   -e BUILD_PATH \
   -e BUILD_SEPARATEASSET \
   -e BUILD_BUILDAAB \
+  -e BUILD_BUILDEXPORTPROJECT \
   -e BUILD_TARGET \
   -e BUILD_METHOD \
   -e Sdk_Path_Env \

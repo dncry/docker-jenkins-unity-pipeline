@@ -64,6 +64,8 @@ pipeline {
         Ndk_Path_UNITY =  '/tools/ndk'
         Jdk_Path_UNITY =  '/tools/jdk'
         Gradle_Path_UNITY =  '/tools/gradle'
+
+        BUILD_PATH_Jenkins = "${WORKSPACE_JENKINS}/${BUILD_PATH}"
     }
 
     stages {
@@ -147,6 +149,14 @@ pipeline {
             }
         }
 
+        stage('Create Export Path') {
+            steps {
+                script {
+                    sh "mkdir -p \"${BUILD_PATH_Jenkins}/\""
+                }
+            }
+        }
+
         stage('Run Container') {
             steps {
                 script {
@@ -175,7 +185,7 @@ pipeline {
                 // 归档 .apk 和 .aab 文件
                 archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true
                 echo '删除build文件'
-                //sh "rm -rf ${BUILD_PATH}/*"
+            //sh "rm -rf ${BUILD_PATH}/*"
             }
         }
     }

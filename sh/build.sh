@@ -19,7 +19,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -buildBundleCode $BUILD_BUNDLECODE \
   -buildPath $BUILD_PATH \
   -buildSeparateAsset $BUILD_SEPARATEASSET \
-  -buildAndroidType $BUILD_BuildAndroidType \
+  -buildAAB $BUILD_BUILDAAB \
   -buildTarget $BUILD_TARGET \
   -sdkPath $Sdk_Path_Env \
   -ndkPath $Ndk_Path_Env \

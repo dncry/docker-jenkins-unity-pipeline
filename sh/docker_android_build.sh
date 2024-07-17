@@ -30,5 +30,5 @@ docker run \
   /bin/bash -c "
     cd /project;
 
-    Gradle_Path_Env assembleRelease;
+    \$Gradle_Path_Env assembleRelease;
   "

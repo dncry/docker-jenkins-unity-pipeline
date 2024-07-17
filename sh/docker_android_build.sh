@@ -29,5 +29,5 @@ docker run \
   "abc/android:cimg-2024.04.1-ndk" \
   /bin/bash -c "
     cd /project;
-    gradle assembleRelease;
+    Gradle_Path_UNITY assembleRelease;
   "

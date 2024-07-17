@@ -19,6 +19,7 @@ docker run \
   -e Jdk_Path_Env \
   -e Gradle_Path_Env \
   -w /project/ \
+  -v $WORKSPACE_OS:/project:cached \
   -v $BUILD_PATH_OS:/project2:cached \
   -v $GRADLECACHE_OS:/root/.gradle \
   -v $Sdk_Path_OS:$Sdk_Path_UNITY \

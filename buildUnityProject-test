@@ -86,7 +86,7 @@ pipeline {
 
                         # 递归地查找apk_output目录及其所有子目录中的.apk文件，并对它们执行重命名  
 
-                        find ${apkDirPath} -type f -name "*.apk" -exec bash -c '  
+                        find ${apkDirPath} -type f -name "*.gradle" -exec bash -c '  
 
                             for file; do  
 
@@ -96,7 +96,7 @@ pipeline {
 
                                 # 使用mv命令重命名文件，在文件名（不含扩展名）后添加"-1"  
 
-                                mv "\$file" "\$(dirname "\$file")/\${basename%.*}-1.apk"  
+                                mv "\$file" "\$(dirname "\$file")/\${basename%.*}-1.gradle"  
 
                             done  
 

@@ -53,7 +53,7 @@ docker run \
 
 
 
-find "$BUILD_PATH_OS" -type f \( -name "*.apk" -o -name "*.aab" \) -exec bash -c '
+find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec bash -c '
     for file; do
         # 提取文件的完整路径
 

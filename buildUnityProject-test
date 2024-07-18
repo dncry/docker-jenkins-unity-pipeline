@@ -86,7 +86,7 @@ pipeline {
                         # 进入APK文件所在的目录  
 
                         cd ${apkDirPath}  
-
+                        ls -la
                           
 
                         # 对目录下的每个apk文件执行重命名操作  

@@ -80,6 +80,24 @@ pipeline {
             }
         }
 
+        stage('Change Name') {
+            steps {
+                script {
+                    // 获取当前时间戳
+                    def timestamp = new Date().format('yyyyMMddHHmmss')
+
+                    // 重命名 .apk 和 .aab 文件，加上时间戳
+                    sh """
+                      for file in \${env.BUILD_PATH}/*.gradle; do
+                                mv "\$file" "abc.apk"
+                            done
+                    """
+
+                    error 'Change'
+                }
+            }
+        }
+
         stage('Set Environment Variables') {
             steps {
                 script {
@@ -194,25 +212,6 @@ pipeline {
 
         stage('Archive Artifacts') {
             steps {
-                script {
-                    // 获取当前时间戳
-                    def timestamp = new Date().format('yyyyMMddHHmmss')
-
-                    // 重命名 .apk 和 .aab 文件，加上时间戳
-                    sh """
-                        if ls \${env.BUILD_PATH}/*.apk 1> /dev/null 2>&1; then
-                            for file in \${env.BUILD_PATH}/*.apk; do
-                                mv "\$file" "\${file%.apk}_$timestamp.apk"
-                            done
-                        fi
-                        if ls \${env.BUILD_PATH}/*.aab 1> /dev/null 2>&1; then
-                            for file in \${env.BUILD_PATH}/*.aab; do
-                                mv "\$file" "\${file%.aab}_$timestamp.aab"
-                            done
-                        fi
-                    """
-                }
-
                 echo ' 归档 .apk 和 .aab 文件'
                 // 归档 .apk 和 .aab 文件
                 archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true

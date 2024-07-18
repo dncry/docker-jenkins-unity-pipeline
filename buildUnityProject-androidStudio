@@ -194,24 +194,24 @@ pipeline {
 
         stage('Archive Artifacts') {
             steps {
-                // script {
-                //     // 获取当前时间戳
-                //     def timestamp = new Date().format('yyyyMMddHHmmss')
+                script {
+                    // 获取当前时间戳
+                    def timestamp = new Date().format('yyyyMMddHHmmss')
 
-                //     // 重命名 .apk 和 .aab 文件，加上时间戳
-                //     sh """
-                //         for file in ${env.BUILD_PATH}/*.apk; do
-                //             if [ -e "\$file" ]; then
-                //                 mv "\$file" "${env.BUILD_PATH}/${env.FILE_NAME}_${env.BUILD_VERSION}_$timestamp.apk"
-                //             fi
-                //         done
-                //         for file in ${env.BUILD_PATH}/*.aab; do
-                //             if [ -e "\$file" ]; then
-                //                 mv "\$file" "${env.BUILD_PATH}/${env.FILE_NAME}_${env.BUILD_VERSION}_$timestamp.aab"
-                //             fi
-                //         done
-                //     """
-                // }
+                    // 重命名 .apk 和 .aab 文件，加上时间戳
+                    sh """
+                        for file in ${env.BUILD_PATH}/*.apk; do
+                            if [ -e "\$file" ]; then
+                                mv "\$file" "\${file%.apk}_$timestamp.apk"
+                            fi
+                        done
+                        for file in ${env.BUILD_PATH}/*.aab; do
+                            if [ -e "\$file" ]; then
+                                mv "\$file" "\${file%.aab}_$timestamp.aab"
+                            fi
+                        done
+                    """
+                }
 
                 echo ' 归档 .apk 和 .aab 文件'
                 // 归档 .apk 和 .aab 文件

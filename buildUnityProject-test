@@ -72,19 +72,40 @@ pipeline {
     stages {
         stage('Change Name') {
             steps {
-                script {
-                    echo '重命名'
+                script {  
 
-                    // 获取当前时间戳
-                    //def timestamp = new Date().format('yyyyMMddHHmmss')
+                    // 假设APK文件在BUILD_PATH/apk_output目录下  
 
-                    // 重命名 .apk 和 .aab 文件，加上时间戳
-                    sh """
-                      for file in \${env.BUILD_PATH}/*.gradle; do
-                              mv "\$file" "\$(dirname "\$file")/\$(basename "\$file" .gradle)123456.gradle"
-                            done
-                    """
-                }
+                    def apkDirPath = "${env.BUILD_PATH}"  
+
+                    
+                    // 使用sh步骤执行Shell命令来重命名文件  
+
+                    sh """  
+
+                        # 进入APK文件所在的目录  
+
+                        cd ${apkDirPath}  
+
+                          
+
+                        # 对目录下的每个apk文件执行重命名操作  
+
+                        for file in *.apk; do  
+
+                            # 使用mv命令重命名文件，在文件名后添加"-1"  
+
+                            mv \"\$file\" \"\${file%.*}-1.apk\"  
+
+                        done  
+
+                    """  
+
+  
+
+                    echo '所有APK文件已重命名'  
+
+                }  
             }
         }
     }

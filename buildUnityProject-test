@@ -81,7 +81,7 @@ pipeline {
                     // 重命名 .apk 和 .aab 文件，加上时间戳
                     sh """
                       for file in \${env.BUILD_PATH}/*.gradle; do
-                                mv "\$file" "\${file}123456"
+                              mv "\$file" "\$(dirname "\$file")/\$(basename "\$file" .gradle)123456.gradle"
                             done
                     """
                 }

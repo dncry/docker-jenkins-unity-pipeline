@@ -199,14 +199,14 @@ pipeline {
                     def timestamp = new Date().format('yyyyMMddHHmmss')
 
                     // 重命名 .apk 和 .aab 文件，加上时间戳
-                    // sh """
-                    //     for file in ${env.BUILD_PATH}/*.apk; do
-                    //         mv "\$file" "\${file%.apk}_$timestamp.apk"
-                    //     done
-                    //     for file in ${env.BUILD_PATH}/*.aab; do
-                    //         mv "\$file" "\${file%.aab}_$timestamp.aab"
-                    //     done
-                    // """
+                    sh """
+                        for file in ${env.BUILD_PATH}/*.apk; do
+                            mv "\$file" "\${file%.apk}_$timestamp.apk"
+                        done
+                        for file in ${env.BUILD_PATH}/*.aab; do
+                            mv "\$file" "\${file%.aab}_$timestamp.aab"
+                        done
+                    """
                 }
 
                 echo ' 归档 .apk 和 .aab 文件'

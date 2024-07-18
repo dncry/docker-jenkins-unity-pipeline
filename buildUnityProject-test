@@ -74,36 +74,45 @@ pipeline {
             steps {
                 script {  
 
-                    // 假设APK文件在BUILD_PATH/apk_output目录下  
+                // 假设APK文件在BUILD_PATH/apk_output目录下  
 
                     def apkDirPath = "${env.BUILD_PATH}/"  
 
-                    
-                    // 使用sh步骤执行Shell命令来重命名文件  
+  
+
+                    // 使用sh步骤执行Shell命令来递归地重命名文件  
 
                     sh """  
 
-                        # 进入APK文件所在的目录  
+                        # 递归地查找apk_output目录及其所有子目录中的.apk文件，并对它们执行重命名  
 
-                        cd ${apkDirPath}  
-                        ls -la
-                          
+                        find ${apkDirPath} -type f -name "*.apk" -exec bash -c '  
 
-                        # 对目录下的每个apk文件执行重命名操作  
+                            for file; do  
 
-                        for file in *.gradle; do  
+                                # 去掉文件名中的路径，只保留文件名和扩展名  
 
-                            # 使用mv命令重命名文件，在文件名后添加"-1"  
+                                basename=\$(basename -- "$file")  
 
-                            mv \"\$file\" \"\${file%.*}-1.gradle\"  
+                                # 使用mv命令重命名文件，在文件名（不含扩展名）后添加"-1"  
 
-                        done  
+                                mv "\$file" "\$(dirname "\$file")/\${basename%.*}-1.apk"  
+
+                            done  
+
+                        ' bash {} +  
+
+  
+
+                        # 注意：这里使用bash -c是为了处理文件名中的特殊字符（如空格、引号等）  
+
+                        # {} + 表示将所有找到的文件名作为参数一次性传递给bash -c  
 
                     """  
 
   
 
-                    echo '所有APK文件已重命名'  
+                    echo '所有APK文件已重命名' 
 
                 }  
             }

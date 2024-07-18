@@ -200,12 +200,16 @@ pipeline {
 
                     // 重命名 .apk 和 .aab 文件，加上时间戳
                     sh """
-                        for file in ${env.BUILD_PATH}/*.apk; do
-                            mv "\$file" "\${file%.apk}_$timestamp.apk"
-                        done
-                        for file in ${env.BUILD_PATH}/*.aab; do
-                            mv "\$file" "\${file%.aab}_$timestamp.aab"
-                        done
+                        if ls \${BUILD_PATH}/*.apk 1> /dev/null 2>&1; then
+                            for file in \${BUILD_PATH}/*.apk; do
+                                mv "\$file" "\${file%.apk}_$timestamp.apk"
+                            done
+                        fi
+                        if ls \${BUILD_PATH}/*.aab 1> /dev/null 2>&1; then
+                            for file in \${BUILD_PATH}/*.aab; do
+                                mv "\$file" "\${file%.aab}_$timestamp.aab"
+                            done
+                        fi
                     """
                 }
 

@@ -206,8 +206,12 @@ pipeline {
                     """).trim().split('\n')
 
                     files.each { file ->
-                        def sizeInMB = file.length() / (1024.0 * 1024.0)
-                        description += "${file.name}: ${String.format('%.2f', sizeInMB)} MB\n"
+                        def fileName = file.substring(file.lastIndexOf('/') + 1)
+                        def sizeInMB = sh(returnStdout: true, script: """
+                            du -b "$file" | cut -f1
+                        """).trim().toDouble() / (1024 * 1024)
+                        def formattedSize = String.format('%.2f', sizeInMB)
+                        description += "${fileName}: ${formattedSize} MB\n"
                     }
 
                     def buildType = env.BUILD_BUILDAAB.toBoolean() ? 'Build AAB' : 'Build APK'

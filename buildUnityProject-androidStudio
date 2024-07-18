@@ -207,11 +207,8 @@ pipeline {
                         description += "${file.name}: ${sizeInMB} MB\n"
                     }
 
-                    if (env.BUILD_BUILDAAB.toBoolean()) {
-                        currentBuild.displayName = 'Build AAB'
-                    } else {
-                        currentBuild.displayName = 'Build APK'
-                    }
+                    def buildType = env.BUILD_BUILDAAB.toBoolean() ? 'Build AAB' : 'Build APK'
+                    currentBuild.displayName = (currentBuild.displayName ?: '') + buildType
 
                     currentBuild.description = description
                 }

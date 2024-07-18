@@ -199,8 +199,11 @@ pipeline {
                 archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true
                 echo '删除build文件'
 
-                currentBuild.displayName = 'Custom sadsadBuild Nameasdasdasdasdasd'
-                currentBuild.description = '123asdsadasdasdasThis is my custom build infasdsadasdasdasasormation'
+                script {
+                    currentBuild.displayName = 'Custom Build Name222222222222'
+                    currentBuild.description = 'This is my custom build information22222222222'
+                }
+
             //sh "rm -rf ${BUILD_PATH}/*"
             }
         }

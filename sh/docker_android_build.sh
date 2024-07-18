@@ -27,7 +27,7 @@ docker run \
   -v $Jdk_Path_OS:$Jdk_Path_UNITY \
   -v $Gradle_Path_OS:$Gradle_Path_UNITY \
   --rm \
-  "abc/android:cimg-2024.04.1-ndk" \
+  $IMAGE \
   /bin/bash -c "
     cd /project2;
     chmod +x \$Gradle_Path_Env/bin/gradle ;

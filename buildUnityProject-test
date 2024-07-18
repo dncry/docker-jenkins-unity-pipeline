@@ -74,14 +74,7 @@ pipeline {
             steps {
                 script {  
 
-                    // 获取 BUILD_PATH 下所有的 .apk 文件
-                    def apkFiles = findFiles(glob: "${env.BUILD_PATH}/**/*.gradle")
-                    
-                    // 遍历每个文件并重命名
-                    apkFiles.each { file ->
-                        def newFileName = "${file.nameWithoutExtension}-1.gradle"
-                        sh "mv ${file} ${file.parent}/${newFileName}"
-                    }
+
 
                 }  
             }

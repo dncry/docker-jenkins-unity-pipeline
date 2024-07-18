@@ -200,8 +200,20 @@ pipeline {
                 echo '删除build文件'
 
                 script {
-                    currentBuild.displayName = 'Custom Build Name222222222222'
-                    currentBuild.description = 'This is my custom build information22222222222'
+                    def files = findFiles(glob: "${env.BUILD_PATH}/**/*.aab, ${env.BUILD_PATH}/**/*.apk")
+                    def description = 'Archived files:\n'
+                    files.each { file ->
+                        def sizeInMB = file.length() / (1024 * 1024)
+                        description += "${file.name}: ${sizeInMB} MB\n"
+                    }
+
+                    if (env.BUILD_BUILDAAB.toBoolean()) {
+                        currentBuild.displayName = 'Build AAB'
+                    } else {
+                        currentBuild.displayName = 'Build APK'
+                    }
+
+                    currentBuild.description = description
                 }
 
             //sh "rm -rf ${BUILD_PATH}/*"

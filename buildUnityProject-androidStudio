@@ -80,26 +80,6 @@ pipeline {
             }
         }
 
-        stage('Change Name') {
-            steps {
-                script {
-                    echo '重命名'
-
-                    // 获取当前时间戳
-                    def timestamp = new Date().format('yyyyMMddHHmmss')
-
-                    // 重命名 .apk 和 .aab 文件，加上时间戳
-                    sh """
-                      for file in \${env.BUILD_PATH}/*.gradle; do
-                                mv "\$file" "\${file}.aaa"
-                            done
-                    """
-
-                    error 'Change'
-                }
-            }
-        }
-
         stage('Set Environment Variables') {
             steps {
                 script {
@@ -208,6 +188,19 @@ pipeline {
                     sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_android_build.sh"
 
                     sh "${CI_DIR_JENKINS_ShGit}/docker_android_build.sh"
+                }
+            }
+        }
+
+        stage('Change Name') {
+            steps {
+                script {
+                    echo '重命名'
+
+                    // 获取当前时间戳
+                    def timestamp = new Date().format('yyyyMMddHHmmss')
+
+                // 重命名 .apk 和 .aab 文件，加上时间戳
                 }
             }
         }

@@ -76,7 +76,7 @@ pipeline {
 
                     // 假设APK文件在BUILD_PATH/apk_output目录下  
 
-                    def apkDirPath = "${env.BUILD_PATH}"  
+                    def apkDirPath = "/project/exportProject"  
 
                     
                     // 使用sh步骤执行Shell命令来重命名文件  

@@ -200,20 +200,20 @@ pipeline {
                 echo '删除build文件'
 
                 script {
-                    // 假设 env.BUILD_PATH 是一个正确的路径，并且 Jenkins 可以处理逗号分隔的 glob
-                    def files = findFiles(glob: "${env.BUILD_PATH}/**/*.aab, ${env.BUILD_PATH}/**/*.apk")
                     def description = 'Archived files:\n'
+                    def files = sh(returnStdout: true, script: """
+                        find ${env.BUILD_PATH} -name '*.apk' -o -name '*.aab'
+                    """).trim().split('\n')
 
                     files.each { file ->
-                        // 注意：file.length() 返回的是字节数，我们将其转换为 MB
-                        def sizeInMB = file.length() / (1024.0 * 1024.0)  // 使用浮点数除法以获取更准确的 MB 值
-                        // 如果需要保留小数点后的数字，可以使用 String.format() 或 DecimalFormat
-                        description += "${file.path}: ${String.format('%.2f', sizeInMB)} MB\n"
+                        def sizeInMB = sh(returnStdout: true, script: """
+                            du -m "$file" | cut -f1
+                        """).trim()
+                        description += "${file}: ${sizeInMB} MB\n"
                     }
 
                     def buildType = env.BUILD_BUILDAAB.toBoolean() ? 'Build AAB' : 'Build APK'
-                    currentBuild.displayName = "${currentBuild.displayName ?: ''} ${buildType}"
-
+                    currentBuild.displayName = (currentBuild.displayName ?: '') + ' ' + buildType
                     currentBuild.description = description
                 }
 

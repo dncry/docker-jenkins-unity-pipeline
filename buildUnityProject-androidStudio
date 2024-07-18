@@ -198,6 +198,24 @@ pipeline {
                 // 归档 .apk 和 .aab 文件
                 archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true
                 echo '删除build文件'
+
+                echo '修改构建状态页面描述信息'
+
+                // 获取当前构建号和构建持续时间
+                def buildNumber = currentBuild.number
+                def buildDuration = currentBuild.duration
+
+                // 构建描述信息
+                def buildDescription = """
+                这是一个自定义的构建描述信息。
+                构建号: ${buildNumber}
+                构建持续时间: ${buildDuration} 毫秒
+                构建参数: ${params}
+                """
+
+                // 更新构建描述信息到 Jenkins 页面
+                currentBuild.description = buildDescription
+
             //sh "rm -rf ${BUILD_PATH}/*"
             }
         }

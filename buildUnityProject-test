@@ -91,11 +91,11 @@ pipeline {
 
                         # 对目录下的每个apk文件执行重命名操作  
 
-                        for file in *.apk; do  
+                        for file in *.gradle; do  
 
                             # 使用mv命令重命名文件，在文件名后添加"-1"  
 
-                            mv \"\$file\" \"\${file%.*}-1.apk\"  
+                            mv \"\$file\" \"\${file%.*}-1.gradle\"  
 
                         done  
 

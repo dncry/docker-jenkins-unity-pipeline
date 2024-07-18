@@ -36,8 +36,19 @@ docker run \
     export ANDROID_NDK_HOME=$Ndk_Path_Env;
     export JAVA_HOME=$Jdk_Path_Env;
 
-    \$Gradle_Path_Env/bin/gradle assembleRelease \
-       -Dsdk.dir=\$Sdk_Path_Env \
-       -Dndk.dir=\$Ndk_Path_Env \
-       -Dorg.gradle.java.home=\$Jdk_Path_Env ;
+    if [ \"\$BUILD_BUILDAAB\" = \"true\" ]; then
+      echo 'Building AAB...';
+      \$Gradle_Path_Env/bin/gradle bundleRelease \
+         -Dsdk.dir=\$Sdk_Path_Env \
+         -Dndk.dir=\$Ndk_Path_Env \
+         -Dorg.gradle.java.home=\$Jdk_Path_Env ;
+    else
+      echo 'Building APK...';
+      \$Gradle_Path_Env/bin/gradle assembleRelease \
+         -Dsdk.dir=\$Sdk_Path_Env \
+         -Dndk.dir=\$Ndk_Path_Env \
+         -Dorg.gradle.java.home=\$Jdk_Path_Env ;
+    fi
+
+
   "

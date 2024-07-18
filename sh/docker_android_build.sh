@@ -65,7 +65,10 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
 
         # 构建新的文件名（时间戳前缀）
 
-        new_filename=" ${FILE_NAME}_${BUILD_VERSION}_${timestamp}"
+        file_name=\"$FILE_NAME\"
+        build_version=\"$BUILD_VERSION\"
+
+        new_filename=" ${file_name}_${build_version}_${timestamp}"
 
         # 构建新的文件路径（保持原目录结构不变）
 

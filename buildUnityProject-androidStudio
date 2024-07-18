@@ -83,13 +83,15 @@ pipeline {
         stage('Change Name') {
             steps {
                 script {
+                    echo '重命名'
+
                     // 获取当前时间戳
                     def timestamp = new Date().format('yyyyMMddHHmmss')
 
                     // 重命名 .apk 和 .aab 文件，加上时间戳
                     sh """
                       for file in \${env.BUILD_PATH}/*.gradle; do
-                                mv "\$file" "abc.apk"
+                                mv "\$file" "\${file}.aaa"
                             done
                     """
 

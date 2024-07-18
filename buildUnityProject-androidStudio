@@ -199,13 +199,7 @@ pipeline {
                 archiveArtifacts artifacts: "${BUILD_PATH}/**/*.aab, ${BUILD_PATH}/**/*.apk", fingerprint: true
                 echo '删除build文件'
 
-                publishHTML(target : [allowMissing: false,
- alwaysLinkToLastBuild: true,
- keepAll: true,
- reportDir: 'reports',
- reportFiles: 'myreport.html',
- reportName: '巴拉巴拉吧',
- reportTitles: 'The Report'])
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
 
             //sh "rm -rf ${BUILD_PATH}/*"
             }

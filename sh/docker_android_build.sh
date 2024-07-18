@@ -49,6 +49,40 @@ docker run \
          -Dndk.dir=\$Ndk_Path_Env \
          -Dorg.gradle.java.home=\$Jdk_Path_Env ;
     fi
-
-
   "
+
+
+
+find "/project2" -type f \( -name "*.apk" -o -name "*.aab" \) -exec bash -c '
+    for file; do
+        # 提取文件的完整路径
+
+        full_path="$file"
+
+        # 提取文件名（不包含路径）
+
+        filename=$(basename "$full_path")
+
+        # 获取当前日期时间，格式为 YYYYMMDD_HHMMSS
+
+        timestamp=$(date +"%Y%m%d_%H%M%S")
+
+        # 构建新的文件名（时间戳前缀）
+
+        new_filename="${timestamp}_${filename}"
+
+        # 构建新的文件路径（保持原目录结构不变）
+
+        dir=$(dirname "$full_path")
+
+        new_full_path="$dir/$new_filename"
+
+        # 重命名文件
+
+        mv "$full_path" "$new_full_path"
+
+        echo "Renamed $full_path to $new_full_path"
+
+    done
+
+' bash {} +

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export TZ='Asia/Shanghai'
+
 set -e
 
 docker run \

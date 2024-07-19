@@ -59,7 +59,7 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
 
         full_path="$file"
 
-        extension="${filename##*.}"
+        extension="${full_path##*.}"
 
         # 获取当前日期时间
 

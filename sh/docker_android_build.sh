@@ -70,7 +70,7 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
 
         # 获取当前日期时间
 
-        timestamp=$(date -d '8 hours' +"%m%d%H%M")
+        timestamp=$(date +"%m%d%H%M")
 
         # 构建新的文件名（时间戳前缀）
 

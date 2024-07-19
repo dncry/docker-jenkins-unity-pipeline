@@ -59,7 +59,11 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
 
         full_path="$file"
 
-        extension="${full_path##*.}"
+        # 提取文件名
+        file_name=$(basename "$full_path")
+
+        # 提取后缀
+        extension="${file_name##*.}"
 
         # 获取当前日期时间
 
@@ -67,7 +71,6 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
 
         # 构建新的文件名（时间戳前缀）
 
-        file_name=\"$FILE_NAME\"
         build_version=\"$BUILD_VERSION\"
 
         new_filename="${file_name}_${build_version}_${timestamp}.${extension}"

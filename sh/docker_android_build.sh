@@ -62,6 +62,9 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
         # 提取文件名
         file_name=$(basename "$full_path")
 
+        # 提取不带后缀的文件名
+        file_name_without_extension="${file_name%.*}"
+
         # 提取后缀
         extension="${file_name##*.}"
 
@@ -71,9 +74,9 @@ find "$BUILD_PATH_Jenkins" -type f \( -name "*.apk" -o -name "*.aab" \) -exec ba
 
         # 构建新的文件名（时间戳前缀）
 
-        build_version=\"$BUILD_VERSION\"
+        build_version= $BUILD_VERSION
 
-        new_filename="${file_name}_${build_version}_${timestamp}.${extension}"
+        new_filename="${file_name_without_extension}_${BUILD_VERSION}_${timestamp}.${extension}"
 
         # 构建新的文件路径（保持原目录结构不变）
 

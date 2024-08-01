@@ -12,7 +12,7 @@ pipeline {
 
         persistentString(name: 'GitPath', defaultValue: '',  description: 'Git地址')
         persistentString(name: 'GitBranch', defaultValue: 'main',  description: 'Git分支')
-        persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2022.3.18f1-android-3.0.1',  description: 'Unity Docker Image')
+        persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2020.3.48f1-android-3.0.1',  description: 'Unity Docker Image')
 
         persistentString(name: 'SdkPath', defaultValue: 'sdk-unity2020.3',  description: '自定义SdkPath')
         persistentString(name: 'NdkPath', defaultValue: 'ndk-unity2020.3',  description: '自定义NdkPath')

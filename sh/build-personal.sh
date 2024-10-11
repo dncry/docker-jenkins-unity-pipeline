@@ -13,7 +13,6 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -logFile /dev/stdout \
   -username $UNITY_USERNAME \
   -password $UNITY_PASSWORD \
-  -serial $UNITY_SERIAL \
   -executeMethod $BUILD_METHOD  \
   -buildVersion $BUILD_VERSION \
   -buildBundleCode $BUILD_BUNDLECODE \

@@ -170,9 +170,9 @@ pipeline {
                         echo "WORKSPACE_OS: ${WORKSPACE_OS}"
                         echo "Workspace: ${WORKSPACE_JENKINS}"
 
-                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_build.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_build-personal.sh"
                         sh "chmod +x ${CI_DIR_JENKINS_ShGit}/before_script.sh"
-                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/build.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/build-personal.sh"
 
                         sh "${CI_DIR_JENKINS_ShGit}/docker_build-personal.sh"
                     }

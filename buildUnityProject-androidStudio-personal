@@ -173,6 +173,7 @@ pipeline {
                         sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_build-personal.sh"
                         sh "chmod +x ${CI_DIR_JENKINS_ShGit}/before_script.sh"
                         sh "chmod +x ${CI_DIR_JENKINS_ShGit}/build-personal.sh"
+                        sh "chmod +x ${CI_DIR_JENKINS_ShGit}/get_activation_file.sh"
 
                         sh "${CI_DIR_JENKINS_ShGit}/docker_build-personal.sh"
                     }

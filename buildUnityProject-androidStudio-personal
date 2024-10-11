@@ -174,7 +174,7 @@ pipeline {
                         sh "chmod +x ${CI_DIR_JENKINS_ShGit}/before_script.sh"
                         sh "chmod +x ${CI_DIR_JENKINS_ShGit}/build.sh"
 
-                        sh "${CI_DIR_JENKINS_ShGit}/docker_build.sh"
+                        sh "${CI_DIR_JENKINS_ShGit}/docker_build-personal.sh"
                     }
                 }
             }

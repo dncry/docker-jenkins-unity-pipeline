@@ -5,6 +5,8 @@ set -x
 
 echo "Building for $BUILD_TARGET"
 
+ls
+
 cd ~
 ls
 mkdir -p ~/.local/share/unity3d/Unity/

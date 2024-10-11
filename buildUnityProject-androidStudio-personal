@@ -163,7 +163,7 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'UNITY_USERNAME', variable: 'UNITY_USERNAME'),
                     string(credentialsId: 'UNITY_PASSWORD', variable: 'UNITY_PASSWORD'),
-                     string(credentialsId: 'UNITY_SERIAL', variable: 'UNITY_SERIAL')
+                     string(credentialsId: 'UNITY_LICENSE', variable: 'UNITY_LICENSE')
                     ]) {
                         // 启动 Docker 容器，并运行 Unity 命令
 

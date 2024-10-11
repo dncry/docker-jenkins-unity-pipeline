@@ -11,7 +11,10 @@ mkdir -p ~/.local/share/unity3d/Unity/
 echo $UNITY_LICENSE > ~/.local/share/unity3d/Unity/Unity_lic.ulf
 cat ~/.local/share/unity3d/Unity/Unity_lic.ulf
 
-cd root/
+cd /home
+ls
+
+cd /project
 ls
 
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \

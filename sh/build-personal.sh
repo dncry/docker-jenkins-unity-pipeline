@@ -6,10 +6,13 @@ set -x
 echo "Building for $BUILD_TARGET"
 
 cd ~
+ls
 mkdir -p ~/.local/share/unity3d/Unity/
 echo $UNITY_LICENSE > ~/.local/share/unity3d/Unity/Unity_lic.ulf
 cat ~/.local/share/unity3d/Unity/Unity_lic.ulf
 
+cd root/
+ls
 
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \
   -projectPath / \

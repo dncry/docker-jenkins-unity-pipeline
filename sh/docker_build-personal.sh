@@ -28,4 +28,4 @@ docker run \
   -v unity-license:/root \
   --rm \
   $IMAGE \
-  /bin/bash -c "${CI_DIR_UNITY_ShGit}/before_script.sh && ${CI_DIR_UNITY_ShGit}/get_activation_file.sh && ${CI_DIR_UNITY_ShGit}/build-personal.sh"
+  /bin/bash -c "${CI_DIR_UNITY_ShGit}/before_script.sh && ${CI_DIR_UNITY_ShGit}/build-personal.sh"

@@ -3,6 +3,8 @@
 set -e
 
 docker run \
+  -e UNITY_USERNAME \
+  -e UNITY_PASSWORD \
   -e BUILD_VERSION \
   -e BUILD_BUNDLECODE \
   -e BUILD_PATH \

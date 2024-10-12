@@ -19,6 +19,8 @@ cat ./unity-output.log |
   grep 'LICENSE SYSTEM .* Posting *' |
   sed 's/.*Posting *//' > "${activation_file}"
 
+echo "#################"
+
 # Fail job if unity.alf is empty
 ls "${UNITY_ACTIVATION_FILE:-./unity3d.alf}"
 exit_code=$?

@@ -22,6 +22,7 @@ docker run \
   -v $Ndk_Path_OS:$Ndk_Path_UNITY \
   -v $Jdk_Path_OS:$Jdk_Path_UNITY \
   -v $Gradle_Path_OS:$Gradle_Path_UNITY \
+  -v unity-2019.4.40f1:/opt \
   -v unity-license:/root \
   --rm \
   $IMAGE \

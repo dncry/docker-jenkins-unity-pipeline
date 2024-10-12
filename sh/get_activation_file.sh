@@ -20,7 +20,7 @@ cat ./unity-output.log |
   sed 's/.*Posting *//' > "${activation_file}"
 
 echo "#################"
-
+pwd
 # Fail job if unity.alf is empty
 ls "${UNITY_ACTIVATION_FILE:-./unity3d.alf}"
 exit_code=$?

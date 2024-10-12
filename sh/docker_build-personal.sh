@@ -25,6 +25,7 @@ docker run \
   -v $Ndk_Path_OS:$Ndk_Path_UNITY \
   -v $Jdk_Path_OS:$Jdk_Path_UNITY \
   -v $Gradle_Path_OS:$Gradle_Path_UNITY \
+  -v unity-license:/root \
   --rm \
   $IMAGE \
   /bin/bash -c "${CI_DIR_UNITY_ShGit}/before_script.sh && ${CI_DIR_UNITY_ShGit}/get_activation_file.sh && ${CI_DIR_UNITY_ShGit}/build-personal.sh"

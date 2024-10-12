@@ -28,6 +28,7 @@ if [[ ${exit_code} -eq 0 ]]; then
   echo ""
   echo "### Congratulations! ###"
   echo "${activation_file} was generated successfully!"
+  cat activation_file
   echo ""
   echo "### Next steps ###"
   echo ""

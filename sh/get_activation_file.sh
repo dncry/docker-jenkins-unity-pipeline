@@ -13,7 +13,7 @@ xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' \
     -batchmode \
     -nographics \
     -createManualActivationFile \
-    -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" |
+    -serial -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" |
       tee ./unity-output.log
 
 cat ./unity-output.log |

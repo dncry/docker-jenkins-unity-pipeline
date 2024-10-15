@@ -30,3 +30,7 @@ sh文件就存放在此git仓库
 
 
 ***
+
+生成个人版UNITY_SERIAL
+`cat Unity_lic.ulf | grep DeveloperData | sed -E 's/.*Value="([^"]+)".*/\1/' | base64 --decode`
+

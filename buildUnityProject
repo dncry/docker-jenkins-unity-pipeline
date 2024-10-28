@@ -64,7 +64,6 @@ pipeline {
         Ndk_Path_UNITY =  '/tools/ndk'
         Jdk_Path_UNITY =  '/tools/jdk'
         Gradle_Path_UNITY =  '/tools/gradle'
-
     }
 
     stages {

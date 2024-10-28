@@ -65,7 +65,7 @@ pipeline {
         Jdk_Path_UNITY =  '/tools/jdk'
         Gradle_Path_UNITY =  '/tools/gradle'
 
-        BUILD_PATH_OS = "${WORKSPACE_OS}/${BUILD_PATH}/AndroidProject"
+        BUILD_PATH_OS = "${WORKSPACE_OS}/${BUILD_PATH}/ExportProject"
         BUILD_PATH_Jenkins = "${WORKSPACE_JENKINS}/${BUILD_PATH}"
     }
 

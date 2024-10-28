@@ -57,13 +57,6 @@ pipeline {
             }
         }
 
-        stage('Set Environment Variables') {
-            steps {
-                script {
-                }
-            }
-        }
-
         stage('Checkout') {
             steps {
                 checkout([

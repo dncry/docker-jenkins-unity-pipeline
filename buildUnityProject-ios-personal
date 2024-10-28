@@ -23,8 +23,6 @@ pipeline {
         BUILD_BUNDLECODE = "${params.BundleVersionCode}"
         BUILD_PATH = "${params.BuildPath}"
         BUILD_SEPARATEASSET =  "${params.SeparateAsset}"
-        BUILD_BUILDAAB = "${params.BuildAAB}"
-        BUILD_BUILDEXPORTPROJECT = 'true'
         BUILD_TARGET = 'iOS'
         BUILD_METHOD = "${params.BuildMethod}"
 
@@ -33,9 +31,6 @@ pipeline {
 
         WORKSPACE_JENKINS = pwd()
         WORKSPACE_OS = "${JENKINS_HOME}/workspace/${FILE_NAME}"
-
-        GRADLECACHE_OS = "${UNITY_HOME}/gradle"
-        MAVENLOCAL_OS = "${UNITY_HOME}/.m2/repository"
 
         FILE_NAME = sh(script: "basename ${WORKSPACE_JENKINS}", returnStdout: true).trim()
 

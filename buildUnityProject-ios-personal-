@@ -47,7 +47,7 @@ pipeline {
         CI_DIR_JENKINS_ShGit = "${WORKSPACE_JENKINS}/.sh${params.ShPath}"
         CI_DIR_UNITY_ShGit = "/project/.sh${params.ShPath}"
 
-        BUILD_PATH_OS = "${WORKSPACE_OS}/${BUILD_PATH}/AndroidProject"
+        BUILD_PATH_OS = "${WORKSPACE_OS}/${BUILD_PATH}/ExportProject"
         BUILD_PATH_Jenkins = "${WORKSPACE_JENKINS}/${BUILD_PATH}"
     }
 

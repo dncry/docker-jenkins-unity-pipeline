@@ -11,6 +11,8 @@ pipeline {
         persistentString(name: 'GitBranch', defaultValue: 'main',  description: 'Git分支')
         persistentString(name: 'UnityImage', defaultValue: 'abc/unity:ubuntu-2020.3.48f1-ios-3.1.0',  description: 'Unity Docker Image')
 
+        persistentString(name: 'MacImage', defaultValue: 'abc/mac:osx-catalina-1',  description: 'Mac Docker Image')
+
         persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
         persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
         persistentString(name: 'ShPath', defaultValue: '/sh/ios',  description: 'Sh路径')
@@ -28,6 +30,8 @@ pipeline {
 
         UNITY_ACTIVATION_FILE =  './unity3d.alf'
         IMAGE = "${params.UnityImage}"
+
+        MAC_IMAGE = "${params.MacImage}"
 
         WORKSPACE_JENKINS = pwd()
         WORKSPACE_OS = "${JENKINS_HOME}/workspace/${FILE_NAME}"
@@ -124,9 +128,9 @@ pipeline {
                 script {
                     echo "BUILD_PATH_OS: ${BUILD_PATH_OS}"
 
-                    sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_android_build.sh"
+                    sh "chmod +x ${CI_DIR_JENKINS_ShGit}/docker_ios_build.sh"
 
-                    sh "${CI_DIR_JENKINS_ShGit}/docker_android_build.sh"
+                    sh "${CI_DIR_JENKINS_ShGit}/docker_ios_build.sh"
                 }
             }
         }

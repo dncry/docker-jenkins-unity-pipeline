@@ -7,6 +7,7 @@ pipeline {
         persistentString(name: 'BuildPath', defaultValue: 'build/local_android', description: '生成路径')
         persistentBoolean(name: 'SeparateAsset', defaultValue: false, description: '是否分包')
         persistentBoolean(name: 'BuildAAB', defaultValue: false, description: 'Build AAB')
+        persistentBoolean(name: 'BuildIL2CPP', defaultValue: true, description: 'Build IL2CPP')
         persistentString(name: 'BuildMethod', defaultValue: 'WS.Auto.BuildWithCommandLine.AutoBuild', description: '打包函数')
 
         persistentString(name: 'GitPath', defaultValue: '',  description: 'Git地址')
@@ -31,6 +32,7 @@ pipeline {
         BUILD_PATH = "${params.BuildPath}"
         BUILD_SEPARATEASSET =  "${params.SeparateAsset}"
         BUILD_BUILDAAB = "${params.BuildAAB}"
+        BUILD_BUILDIL2CPP = "${params.BuildIL2CPP}"
         BUILD_BUILDEXPORTPROJECT = 'true'
         BUILD_TARGET = 'Android'
         BUILD_METHOD = "${params.BuildMethod}"

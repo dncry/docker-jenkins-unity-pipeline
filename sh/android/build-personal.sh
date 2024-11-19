@@ -20,6 +20,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -buildPath $BUILD_PATH \
   -buildSeparateAsset $BUILD_SEPARATEASSET \
   -buildAAB $BUILD_BUILDAAB \
+  -buildIL2CPP $BUILD_BUILDIL2CPP \
   -exportProject $BUILD_BUILDEXPORTPROJECT \
   -buildTarget $BUILD_TARGET \
   -sdkPath $Sdk_Path_Env \

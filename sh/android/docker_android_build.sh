@@ -36,7 +36,10 @@ docker run \
     chmod +x \$Gradle_Path_Env/bin/gradle ;
 
     export ANDROID_SDK_ROOT=$Sdk_Path_Env;
+
     export ANDROID_NDK_HOME=$Ndk_Path_Env;
+    export ANDROID_NDK_ROOT=$Ndk_Path_Env;
+
     export JAVA_HOME=$Jdk_Path_Env;
 
     if [ \"\$BUILD_BUILDAAB\" = \"true\" ]; then

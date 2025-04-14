@@ -47,13 +47,15 @@ docker run \
       \$Gradle_Path_Env/bin/gradle bundleRelease \
          -Dsdk.dir=\$Sdk_Path_Env \
          -Dndk.dir=\$Ndk_Path_Env \
-         -Dorg.gradle.java.home=\$Jdk_Path_Env ;
+         -Dorg.gradle.java.home=\$Jdk_Path_Env \
+         --stacktrace --debug ;
     else
       echo 'Building APK...';
       \$Gradle_Path_Env/bin/gradle assembleRelease \
          -Dsdk.dir=\$Sdk_Path_Env \
          -Dndk.dir=\$Ndk_Path_Env \
-         -Dorg.gradle.java.home=\$Jdk_Path_Env ;
+         -Dorg.gradle.java.home=\$Jdk_Path_Env \
+         --stacktrace --debug ;
     fi
   "
 

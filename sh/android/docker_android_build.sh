@@ -21,6 +21,7 @@ docker run \
   -e Ndk_Path_Env \
   -e Jdk_Path_Env \
   -e Gradle_Path_Env \
+  -e GRADLE_REFRESH_DEPENDENCIES \
   -w /project/ \
   -v $WORKSPACE_OS:/project:cached \
   -v $BUILD_PATH_OS:/project2:cached \
@@ -42,20 +43,27 @@ docker run \
 
     export JAVA_HOME=$Jdk_Path_Env;
 
+
+    if [ \"\$GRADLE_REFRESH_DEPENDENCIES\" = \"true\" ]; then
+      echo 'Gradle will refresh dependencies...';
+      REFRESH_ARG=\"--refresh-dependencies\"
+    fi
+
+
     if [ \"\$BUILD_BUILDAAB\" = \"true\" ]; then
       echo 'Building AAB...';
       \$Gradle_Path_Env/bin/gradle bundleRelease \
          -Dsdk.dir=\$Sdk_Path_Env \
          -Dndk.dir=\$Ndk_Path_Env \
          -Dorg.gradle.java.home=\$Jdk_Path_Env \
-         --stacktrace --info ;
+         --stacktrace --info \$REFRESH_ARG ;
     else
       echo 'Building APK...';
       \$Gradle_Path_Env/bin/gradle assembleRelease \
          -Dsdk.dir=\$Sdk_Path_Env \
          -Dndk.dir=\$Ndk_Path_Env \
          -Dorg.gradle.java.home=\$Jdk_Path_Env \
-         --stacktrace --info ;
+         --stacktrace --info  \$REFRESH_ARG ;
     fi
   "
 

@@ -20,6 +20,7 @@ pipeline {
         persistentString(name: 'GradlePath', defaultValue: 'gradle-7.2',  description: '自定义GradlePath')
 
         persistentString(name: 'GradleCachePath', defaultValue: 'gradle',  description: '自定义Gradle缓存目录')
+        persistentBoolean(name: 'GradleRefresh', defaultValue: false, description: 'Gradle 依赖缓存刷新')
 
         persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
         persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
@@ -38,6 +39,8 @@ pipeline {
         BUILD_BUILDEXPORTPROJECT = 'true'
         BUILD_TARGET = 'Android'
         BUILD_METHOD = "${params.BuildMethod}"
+
+        GRADLE_REFRESH_DEPENDENCIES = "${params.GradleRefresh}"
 
         UNITY_ACTIVATION_FILE =  './unity3d.alf'
         IMAGE = "${params.UnityImage}"

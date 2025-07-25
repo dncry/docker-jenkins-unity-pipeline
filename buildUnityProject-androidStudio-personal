@@ -19,6 +19,8 @@ pipeline {
         persistentString(name: 'JdkPath', defaultValue: 'jdk-11.0.14',  description: '自定义JdkPath')
         persistentString(name: 'GradlePath', defaultValue: 'gradle-7.2',  description: '自定义GradlePath')
 
+        persistentString(name: 'GradleCachePath', defaultValue: 'gradle',  description: '自定义Gradle缓存目录')
+
         persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
         persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
         persistentString(name: 'ShPath', defaultValue: '/sh/android',  description: 'Sh路径')
@@ -43,7 +45,7 @@ pipeline {
         WORKSPACE_JENKINS = pwd()
         WORKSPACE_OS = "${JENKINS_HOME}/workspace/${FILE_NAME}"
 
-        GRADLECACHE_OS = "${UNITY_HOME}/gradle"
+        GRADLECACHE_OS = "${UNITY_HOME}/${GradleCachePath}"
         MAVENLOCAL_OS = "${UNITY_HOME}/.m2/repository"
 
         FILE_NAME = sh(script: "basename ${WORKSPACE_JENKINS}", returnStdout: true).trim()

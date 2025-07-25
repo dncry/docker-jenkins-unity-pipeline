@@ -20,13 +20,13 @@ pipeline {
         persistentString(name: 'GradlePath', defaultValue: 'gradle-7.2',  description: '自定义GradlePath')
 
         persistentString(name: 'GradleCachePath', defaultValue: 'gradle',  description: '自定义Gradle缓存目录')
-        persistentBoolean(name: 'GradleRefresh', defaultValue: false, description: 'Gradle 依赖缓存刷新')
+        booleanParam(name: 'GradleRefresh', defaultValue: false, description: 'Gradle 依赖缓存刷新')
 
         persistentString(name: 'ShGitPath', defaultValue: 'http://192.168.50.83:3000/abc/docker-jenkins-unity-pipeline.git',  description: 'ShGit地址')
         persistentString(name: 'ShGitBranch', defaultValue: 'main',  description: 'ShGit分支')
         persistentString(name: 'ShPath', defaultValue: '/sh/android',  description: 'Sh路径')
 
-        persistentBoolean(name: 'OnlyInit', defaultValue: true, description: '只初始化参数')
+        booleanParam(name: 'OnlyInit', defaultValue: true, description: '只初始化参数')
     }
 
     environment {

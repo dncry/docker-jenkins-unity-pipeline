@@ -21,6 +21,7 @@ docker run \
   -e Gradle_Path_Env \
   -w /project/ \
   -v $WORKSPACE_OS:/project:cached \
+  -v $UPMCACHE_OS:/root/.config/unity3d/cache \
   -v $GRADLECACHE_OS:/root/.gradle \
   -v $Sdk_Path_OS:$Sdk_Path_UNITY \
   -v $Ndk_Path_OS:$Ndk_Path_UNITY \
